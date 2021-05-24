@@ -532,9 +532,9 @@ check_refcounts(Tcl_Obj *objPtr) {
 #endif
 
 static int
-has_highbit(CONST char *s, int len)
+has_highbit(const char *s, int len)
 {
-    CONST char *e = s + len;
+    const char *e = s + len;
     while (s < e) {
 	if (*s++ & 0x80)
 	    return 1;
@@ -547,7 +547,7 @@ SvFromTclObj(pTHX_ Tcl_Obj *objPtr)
 {
     SV *sv;
     int len;
-    char *str;
+    const char *str;
 
     if (objPtr == NULL) {
 	/*
@@ -578,7 +578,7 @@ SvFromTclObj(pTHX_ Tcl_Obj *objPtr)
 	}
     }
     else if (objPtr->typePtr == tclByteArrayTypePtr) {
-	str = (char *) Tcl_GetByteArrayFromObj(objPtr, &len);
+	str = (const char *) Tcl_GetByteArrayFromObj(objPtr, &len);
 	sv = newSVpvn(str, len);
     }
     else if (objPtr->typePtr == tclListTypePtr) {
@@ -1721,7 +1721,7 @@ as_string(SV* sv,...)
     PREINIT:
 	Tcl_Obj* objPtr;
 	int len;
-	char *str;
+	const char *str;
     CODE:
 	objPtr = TclObjFromSv(aTHX_ sv);
 	Tcl_IncrRefCount(objPtr);
