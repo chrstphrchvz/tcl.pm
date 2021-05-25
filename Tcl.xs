@@ -19,9 +19,10 @@
 #endif
 
 /*
- * Until we update for 8.4 CONST-ness
+ * Updated for 8.4 CONST-ness
+ * Define USE_NON_CONST to check for pre-8.4 warnings
  */
-#define USE_NON_CONST
+/* #define USE_NON_CONST */
 
 /*
  * Both Perl and Tcl use these macros
@@ -165,13 +166,13 @@ extern Tcl_PackageInitProc Blt_Init, Blt_SafeInit;
  * These may not exist - guard against NULL result.
  */
 
-static Tcl_ObjType *tclBooleanTypePtr = NULL;
-static Tcl_ObjType *tclByteArrayTypePtr = NULL;
-static Tcl_ObjType *tclDoubleTypePtr = NULL;
-static Tcl_ObjType *tclIntTypePtr = NULL;
-static Tcl_ObjType *tclListTypePtr = NULL;
-static Tcl_ObjType *tclStringTypePtr = NULL;
-static Tcl_ObjType *tclWideIntTypePtr = NULL;
+static const Tcl_ObjType *tclBooleanTypePtr = NULL;
+static const Tcl_ObjType *tclByteArrayTypePtr = NULL;
+static const Tcl_ObjType *tclDoubleTypePtr = NULL;
+static const Tcl_ObjType *tclIntTypePtr = NULL;
+static const Tcl_ObjType *tclListTypePtr = NULL;
+static const Tcl_ObjType *tclStringTypePtr = NULL;
+static const Tcl_ObjType *tclWideIntTypePtr = NULL;
 
 /*
  * This tells us whether Tcl is in a "callable" state.  Set to 1 in BOOT
@@ -1208,7 +1209,7 @@ Tcl_invoke(interp, sv, ...)
 #define NUM_OBJS 16
 	    Tcl_Obj     *baseobjv[NUM_OBJS];
 	    Tcl_Obj    **objv = baseobjv;
-	    char        *cmdName;
+	    CONST84 char *cmdName;
 	    int          objc, i, result;
 	    STRLEN       length;
 	    Tcl_CmdInfo	 cmdinfo;
@@ -1275,11 +1276,11 @@ Tcl_invoke(interp, sv, ...)
 		 * prepare string arguments into argv (1st is already done)
 		 * and call found procedure
 		 */
-		char  *baseargv[NUM_OBJS];
-		char **argv = baseargv;
+		CONST84 char  *baseargv[NUM_OBJS];
+		CONST84 char **argv = baseargv;
 
 		if (objc > NUM_OBJS) {
-		    New(666, argv, objc, char *);
+		    New(666, argv, objc, CONST84 char *);
 		}
 
 		argv[0] = cmdName;
@@ -1632,8 +1633,8 @@ Tcl_SplitList(interp, str)
 	Tcl		interp
 	char *		str
 	int		argc = NO_INIT
-	char **		argv = NO_INIT
-	char **		tofree = NO_INIT
+	CONST84 char **	argv = NO_INIT
+	CONST84 char **	tofree = NO_INIT
     PPCODE:
 	if (Tcl_SplitList(interp, str, &argc, &argv) == TCL_OK)
 	{
