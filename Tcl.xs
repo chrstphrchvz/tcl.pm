@@ -400,7 +400,7 @@ NpInitialize(pTHX_ SV *X)
      * Variable initstubs have to be declared as volatile to prevent
      * compiler optimizing it out.
      */
-    static CONST char *(*volatile initstubs)(Tcl_Interp *, CONST char *, int)
+    static const char *(*volatile initstubs)(Tcl_Interp *, const char *, int)
 	= Tcl_InitStubs;
     char dllFilename[MAX_PATH];
     dllFilename[0] = '\0';
@@ -496,7 +496,7 @@ NpInitialize(pTHX_ SV *X)
 	}
     }
     if (tclKit_AppInit(g_Interp) != TCL_OK) {
-	CONST84 char *msg = Tcl_GetVar(g_Interp, "errorInfo", TCL_GLOBAL_ONLY);
+	const char *msg = Tcl_GetVar(g_Interp, "errorInfo", TCL_GLOBAL_ONLY);
 	warn("Failed to initialize Tcl with %s:\n%s",
 		(tclKit_AppInit == Tcl_Init) ? "Tcl_Init" : "TclKit_AppInit",
 		msg);
@@ -784,7 +784,7 @@ TclObjFromSv(pTHX_ SV *sv)
 }
 
 int Tcl_EvalInPerl(ClientData clientData, Tcl_Interp *interp,
-	int objc, Tcl_Obj *CONST objv[])
+	int objc, Tcl_Obj *const objv[])
 {
     dTHX; /* fetch context */
     dSP;
@@ -841,7 +841,7 @@ int Tcl_EvalInPerl(ClientData clientData, Tcl_Interp *interp,
 }
 
 int Tcl_PerlCallWrapper(ClientData clientData, Tcl_Interp *interp,
-	int objc, Tcl_Obj *CONST objv[])
+	int objc, Tcl_Obj *const objv[])
 {
     dTHX; /* fetch context */
     dSP;
